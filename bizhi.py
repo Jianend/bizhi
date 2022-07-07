@@ -52,8 +52,8 @@ if __name__  == "__main__":
     ctypes.windll.user32.SystemParametersInfoW(20, 0, ml, 0)
     print('成功')
     '''设置背景图片a.jpg'''
-    '''定时运行脚本'''
-    for i in range(60*10,0):
+    '''倒计时'''
+    for i in range(60*10,0,-1):
         print(u"\r%d秒后刷新"%i,end='')
         time.sleep(1)
     #git  pull
