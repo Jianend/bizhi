@@ -62,9 +62,14 @@ if __name__  == "__main__":
     print('成功')
     '''设置背景图片a.jpg'''
     '''倒计时'''
-    for i in range(60*10,0,-1):
-        print(u"\r%d秒后刷新"%i,end='')
-        time.sleep(1)
+    sum = 60         # 设置倒计时时间
+    timeflush = 0.25  # 设置屏幕刷新的间隔时间
+    a=int(sum/timeflush)
+    for i in range(0, a):
+        list = ["\\", "|", "/", "—"]
+        index = i % 4
+        print("\r程序正在运行 {}".format(list[index]), end="")
+        time.sleep(timeflush)
     #git  pull
     os.system('git add . ')
     os.system(' git commit -m "bz"')
