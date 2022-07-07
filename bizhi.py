@@ -14,9 +14,14 @@ import time
 '''josn'''
 import json
 def get_json(url):
-    hasattr = {'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.66 Mobile Safari/537.36 Edg/103.0.1264.44'}
-    r = requests.get(url, headers=hasattr)
-    return r.json()
+    try:
+        hasattr = {'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.66 Mobile Safari/537.36 Edg/103.0.1264.44'}
+        r = requests.get(url, headers=hasattr)
+        return r.json()
+    except:
+        print('完成')
+        return 0
+
 def get_soup(url):
     url=url['data']
     url=url[0]
@@ -29,12 +34,16 @@ def get_soup(url):
 
 '''下载图片'''
 def get_img(url,name):
-    hasattr = {'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.66 Mobile Safari/537.36 Edg/103.0.1264.44'}
-    r = requests.get(url, headers=hasattr)
-    with open(name, 'wb') as f:
-        f.write(r.content)
-        f.close()
-    return name
+    try:
+        hasattr = {'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.66 Mobile Safari/537.36 Edg/103.0.1264.44'}
+        r = requests.get(url, headers=hasattr)
+        with open(name, 'wb') as f:
+            f.write(r.content)
+            f.close()
+        return name
+    except:
+        print('完成')
+        return 0      
     
 
 
@@ -62,8 +71,6 @@ if __name__  == "__main__":
     os.system('git push -u origin main')
     p='python '+__file__
     os.system(p)
-    
-    print('cg')
     
 
 
