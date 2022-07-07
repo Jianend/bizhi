@@ -57,7 +57,8 @@ if __name__  == "__main__":
         print(u"\r%d秒后刷新"%i,end='')
         time.sleep(1)
     #git  pull
-
+    os.system('git add . ')
+    os.system(' git commit -m "bz"')
     os.system('git push -u origin main')
     p='python '+__file__
     os.system(p)
