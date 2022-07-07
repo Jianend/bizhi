@@ -76,8 +76,3 @@ if __name__  == "__main__":
     os.system('git push -u origin main')
     p='python '+__file__
     os.system(p)
-    
-
-
-
-    
