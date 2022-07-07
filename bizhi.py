@@ -56,8 +56,12 @@ if __name__  == "__main__":
     for i in range(0,60*10):
         print(u"\r%d秒后刷新"%i,end='')
         time.sleep(1)
+    #git  pull
+
+    os.system('git push -u origin main')
     p='python '+__file__
     os.system(p)
+    
     print('cg')
     
 
