@@ -76,8 +76,7 @@ def main():
     print('成功')
     '''设置背景图片a.jpg'''
     '''倒计时'''
-    daojishi()
-    time.sleep(60)
+    
 
     
 
@@ -87,4 +86,5 @@ if __name__  == "__main__":
 
     while True:
         main()
+        time.sleep(60)
     #git  pull
