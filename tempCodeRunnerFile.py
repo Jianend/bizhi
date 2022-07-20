@@ -1,0 +1,1 @@
+https://api.lolicon.app/setu/v2?r18=1

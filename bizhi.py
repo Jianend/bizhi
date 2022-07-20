@@ -59,8 +59,6 @@ def daojishi():
 
 def main():
     
-    conn_th = threading.Thread(target=daojishi, args=())
-    conn_th.start()
     url = 'https://api.lolicon.app/setu/v2?r18=1'
     html=get_json(url)
     if html ==False:
@@ -75,8 +73,11 @@ def main():
     ctypes.windll.user32.SystemParametersInfoW(20, 0, ml, 0)
     print('成功')
     '''设置背景图片a.jpg'''
+
     '''倒计时'''
-    
+    #执行命令
+    os.system("cls")
+        
 
     
 
@@ -85,6 +86,8 @@ def main():
 if __name__  == "__main__":
 
     while True:
+        conn_th = threading.Thread(target=daojishi, args=())
+        conn_th.start()
         main()
-        time.sleep(60) 
+        time.sleep(60*10) 
     #git  pull
