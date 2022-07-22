@@ -1,5 +1,6 @@
 '''访问网站'''
 
+from calendar import c
 import ctypes
 import os
 from pip import main
@@ -47,14 +48,13 @@ def get_img(url,name):
         print('完成')
         return 0      
 def daojishi():
-    sum = 60         # 设置倒计时时间
-    timeflush = 0.25  # 设置屏幕刷新的间隔时间
-    a=int(sum/timeflush)
-    for i in range(0, a):
+    i=1
+    while True:
         list = ["\\", "|", "/", "—"]
         index = i % 4
         print("\r程序正在运行 {}".format(list[index]), end="")
-        time.sleep(timeflush)
+        time.sleep(0.25)
+        i=i+1
 
 
 def main():
@@ -90,4 +90,7 @@ if __name__  == "__main__":
         conn_th.start()
         main()
         time.sleep(60*10) 
+        #停止线程
+        
+
     #git  pull
