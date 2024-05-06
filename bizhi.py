@@ -1,96 +1,69 @@
-'''访问网站'''
 
-from calendar import c
-import ctypes
+
 import os
-from pip import main
 import requests
 import time
+import logging
+import sys
 import threading
 
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-
-
-
-
-'''josn'''
-import json
-def get_json(url):
+def get_image_url(api_url):
     try:
-        hasattr = {'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.66 Mobile Safari/537.36 Edg/103.0.1264.44'}
-        r = requests.get(url, headers=hasattr)
-        return r.json()
-    except:
-        print('出错')
+        headers = {'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.66 Mobile Safari/537.36 Edg/103.0.1264.44'}
+        response = requests.get(api_url, headers=headers)
+        data = response.json()
+        image_url = data.get('data', [{}])[0].get('urls', {}).get('original')
+        return image_url
+    except Exception as e:
+        logging.error(f"Failed to get image URL: {e}")
+        return None
+
+def download_image(image_url, filename):
+    try:
+        response = requests.get(image_url)
+        response.raise_for_status()
+        with open(filename, 'wb') as f:
+            f.write(response.content)
+        logging.info(f"Image downloaded: {filename}")
+        return True
+    except Exception as e:
+        logging.error(f"Failed to download image: {e}")
         return False
 
-def get_soup(url):
-    url=url['data']
-    url=url[0]
-    jpg=url['ext']
-    url=url['pid']
-    surl='https://pximg.rainchan.win/img?img_id='+str(url)
-    name=get_img(surl,'a.'+jpg)
-    return name
-
-
-'''下载图片'''
-def get_img(url,name):
-    try:
-        hasattr = {'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.66 Mobile Safari/537.36 Edg/103.0.1264.44'}
-        r = requests.get(url, headers=hasattr)
-        with open(name, 'wb') as f:
-            f.write(r.content)
-            f.close()
-        return name
-    except:
-        print('完成')
-        return 0      
-def daojishi():
-    i=1
-    while True:
-        list = ["\\", "|", "/", "—"]
-        index = i % 4
-        print("\r程序正在运行 {}".format(list[index]), end="")
-        time.sleep(0.25)
-        i=i+1
-
-
 def main():
+    api_url = 'https://api.lolicon.app/setu/v2?r18=1'
+    image_url = get_image_url(api_url)
+    if not image_url:
+        return
+
+    filename = os.path.basename(image_url)
+    try:
+        download_image(image_url, filename)
+    except Exception as e:
+        logging.error(f"Failed to process image: {e}")
+
+def show_progress():
+    symbols = ['\\', '|', '/', '—']
+    i = 0
     
-    url = 'https://api.lolicon.app/setu/v2?r18=1'
-    html=get_json(url)
-    if html ==False:
-            return 0 
-    name = get_soup(html)
-    
-    '''当前目录'''
-    
-    ml=os.getcwd()+'\\'+name
-
-    '''设置背景图片a.jpg'''
-    ctypes.windll.user32.SystemParametersInfoW(20, 0, ml, 0)
-    print('成功')
-    '''设置背景图片a.jpg'''
-
-    '''倒计时'''
-    #执行命令
-    os.system("cls")
-        
-
-    
-
-
-    
-if __name__  == "__main__":
-
     while True:
-        conn_th = threading.Thread(target=daojishi, args=())
-        conn_th.start()
-        main()
-        time.sleep(60*10) 
-        #停止线程
-        
+        sys.stdout.write(f"\r程序正在运行 {symbols[i % len(symbols)]}")
+        sys.stdout.flush()
+        time.sleep(0.25)
+        i += 1
 
-    #git  pull
+if __name__ == "__main__":
+    try:
+        progress_thread = threading.Thread(target=show_progress)
+        progress_thread.start()
+        
+        while True:
+            main()
+            time.sleep(10*60)  # Download image every 10 minutes
+            
+        progress_thread.join()
+    except KeyboardInterrupt:
+        logging.info("程序已停止")
